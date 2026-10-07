@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+import { getCollection } from 'astro:content';
+
+const startups = await getCollection('startups');
+---
+
+<Layout title="Startups - #Founder">
+  <section class="section container">
+    
+    <div class="startups-grid">
+      {startups.map(startup => (
+        <a href={`/startups/${startup.id}`} class="startup-card glass">
+          <div class="startup-logo">{startup.data.logoText}</div>
+          <h3>{startup.data.name}</h3>
+          <p class="startup-desc">{startup.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .section {
+    padding: 2rem 0 5rem 0;
+  }
+
+  .startups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .startup-card {
+    padding: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: block;
+  }
+
+  .startup-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--card-hover-border);
+  }
+
+  .startup-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: var(--logo-bg);
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--logo-text);
+    box-shadow: var(--card-shadow);
+  }
+
+  .startup-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+import { getCollection } from 'astro:content';
+
+const stories = await getCollection('stories');
+---
+
+<Layout title="Founder Stories - #Founder">
+  <section class="stories-page container">
+    <header class="page-header">
+      <h1 class="page-title">Founder <span class="gradient-text">Stories</span></h1>
+      <p class="page-subtitle">Real experiences, struggles, and triumphs from the builders shaping the future.</p>
+    </header>
+
+    <div class="stories-grid">
+      {stories.map(story => (
+        <article class="story-card glass">
+          <div class="story-header">
+            <div class="story-avatar">{story.data.avatar}</div>
+            <div class="story-meta">
+              <h3>{story.data.name}</h3>
+              <span class="startup-name">{story.data.startup}</span>
+            </div>
+          </div>
+          <div class="story-content">
+            <p>"{story.data.excerpt}"</p>
+          </div>
+          <a href={`/stories/${story.id}`} class="btn-read-more">Read Full Story</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .stories-page {
+    padding: 4rem 0 6rem 0;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .page-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .story-card {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+    border-color: var(--card-hover-border);
+  }
+
+  .story-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .story-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e293b, #3b82f6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  :root[data-theme="light"] .story-avatar {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  }
+
+  .story-meta h3 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+  }
+
+  .startup-name {
+    font-size: 0.95rem;
+    color: var(--accent-color);
+    font-weight: 600;
+  }
+
+  .story-content {
+    flex-grow: 1;
+    margin-bottom: 2rem;
+  }
+
+  .story-content p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .btn-read-more {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+  }
+
+  .btn-read-more:hover {
+    background: var(--text-primary);
+    color: var(--bg-color);
+  }
+
+  @media (max-width: 768px) {
+    .stories-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

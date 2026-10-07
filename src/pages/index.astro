@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="#Founder - By Karpav Technology">
+  <!-- Hero Section -->
+  <section class="hero container">
+    <div class="hero-content">
+      <h1 class="hero-title">Empowering the Next Generation of <span class="gradient-text">Founders</span></h1>
+      <p class="hero-subtitle">Discover innovative startups, connect with peers, and get answers to your most pressing incorporation questions.</p>
+      
+      <div class="hero-actions">
+        <a href="/startups" class="btn btn-primary">Explore Startups</a>
+        <a href="/faq" class="btn btn-secondary">Incorporation FAQ</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    padding: 8rem 0 4rem;
+    text-align: center;
+    min-height: calc(100vh - 80px - 150px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.05em;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 3rem;
+    }
+    .hero-actions {
+      flex-direction: column;
+    }
+  }
+</style>
