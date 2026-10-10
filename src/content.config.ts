@@ -18,6 +18,11 @@ const startupsCollection = defineCollection({
     logoText: z.string(),
     website: z.string().url().optional(),
     tags: z.array(z.string()).optional(),
+    industry: z.string().optional(),
+    stage: z.string().optional(),
+    founded: z.string().optional(),
+    hq: z.string().optional(),
+    featured: z.boolean().optional(),
   }),
 });
 
@@ -27,12 +32,13 @@ const storiesCollection = defineCollection({
     name: z.string(),
     startup: z.string(),
     avatar: z.string(),
-    excerpt: z.string()
+    excerpt: z.string(),
+    featured: z.boolean().optional(),
   }),
 });
 
 export const collections = {
-  'faqs': faqsCollection,
-  'startups': startupsCollection,
-  'stories': storiesCollection,
+  faqs: faqsCollection,
+  startups: startupsCollection,
+  stories: storiesCollection,
 };

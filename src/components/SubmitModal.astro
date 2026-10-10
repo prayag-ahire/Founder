@@ -1,92 +1,96 @@
 ---
-import '../styles/global.css';
+import { site } from '../lib/site';
 ---
 
-<div id="submit-modal" class="modal-backdrop hidden">
+<div id="submit-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="submit-title">
   <div class="modal-content glass">
-    <button id="close-modal" class="btn-close" aria-label="Close modal">✕</button>
-    
-    <h2>Submit to #Founder</h2>
-    <p class="modal-desc">Have a question you want answered or a startup you want featured? Let us know!</p>
-    
+    <button id="close-modal" class="btn-close" type="button" aria-label="Close">✕</button>
+
+    <h2 id="submit-title">Write to {site.name}</h2>
+    <p class="modal-desc">Questions for the FAQ, a startup to feature, or feedback. This opens an email to {site.email}.</p>
+
     <form id="submit-form" class="submit-form">
       <div class="form-group">
-        <label for="submission-type">I want to submit a...</label>
+        <label for="submission-type">I want to submit</label>
         <select id="submission-type" name="type" required>
-          <option value="question">Question for FAQ</option>
-          <option value="startup">Startup to Feature</option>
-          <option value="feedback">General Feedback</option>
+          <option value="question">A question for the FAQ</option>
+          <option value="startup">A startup to feature</option>
+          <option value="feedback">General feedback</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="submission-details">Details</label>
-        <textarea id="submission-details" name="details" rows="4" placeholder="Tell us more..." required></textarea>
+        <textarea id="submission-details" name="details" rows="4" placeholder="What should we know?" required></textarea>
       </div>
 
       <div class="form-group">
-        <label for="submission-email">Your Email (Optional)</label>
-        <input type="email" id="submission-email" name="email" placeholder="hello@example.com" />
+        <label for="submission-email">Your email (optional)</label>
+        <input type="email" id="submission-email" name="email" placeholder="you@company.in" />
       </div>
 
-      <button type="submit" class="btn btn-primary btn-submit">Submit Request</button>
+      <button type="submit" class="btn btn-primary btn-submit">Open email draft</button>
     </form>
   </div>
 </div>
 
-<script is:inline>
+<script is:inline define:vars={{ contactEmail: site.email }}>
   document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('submit-modal');
     const closeBtn = document.getElementById('close-modal');
     const form = document.getElementById('submit-form');
-    
-    // Listen for custom event to open modal
-    document.addEventListener('openSubmitModal', () => {
-      modal.classList.remove('hidden');
-    });
+    const typeSelect = document.getElementById('submission-type');
 
-    closeBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
-    });
-
-    // Close on click outside
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
+    function openModal(type) {
+      if (type && [...typeSelect.options].some((opt) => opt.value === type)) {
+        typeSelect.value = type;
       }
+      modal.classList.remove('hidden');
+      typeSelect.focus();
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+    }
+
+    document.addEventListener('openSubmitModal', (event) => {
+      openModal(event.detail && event.detail.type);
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
     });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Mock submit
-      const btn = form.querySelector('.btn-submit');
-      const originalText = btn.textContent;
-      btn.textContent = 'Submitting...';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        btn.textContent = 'Submitted!';
-        btn.style.background = '#10b981'; // Green
-        
-        setTimeout(() => {
-          modal.classList.add('hidden');
-          form.reset();
-          btn.textContent = originalText;
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 1500);
-      }, 1000);
+      const type = typeSelect.value;
+      const details = document.getElementById('submission-details').value.trim();
+      const email = document.getElementById('submission-email').value.trim();
+      const subject = encodeURIComponent(`[${type}] ${siteLabel(type)} — #Founder`);
+      const body = encodeURIComponent(
+        `Type: ${type}\n\n${details}\n\nFrom: ${email || 'not provided'}\n`
+      );
+      window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+      closeModal();
+      form.reset();
     });
+
+    function siteLabel(type) {
+      if (type === 'question') return 'FAQ question';
+      if (type === 'startup') return 'Startup feature';
+      return 'Feedback';
+    }
   });
 </script>
 
 <style>
   .modal-backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
+    inset: 0;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
     z-index: 1000;
@@ -94,9 +98,6 @@ import '../styles/global.css';
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    opacity: 1;
-    visibility: visible;
-    transition: all 0.3s ease;
   }
 
   .modal-backdrop.hidden {
@@ -106,66 +107,50 @@ import '../styles/global.css';
   }
 
   .modal-content {
-    background: var(--header-bg);
     width: 100%;
     max-width: 500px;
-    padding: 2.5rem;
+    padding: 2.25rem;
     position: relative;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  }
-
-  .modal-backdrop.hidden .modal-content {
-    transform: translateY(20px);
+    background: var(--header-bg);
   }
 
   .btn-close {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1.25rem;
+    right: 1.25rem;
     background: transparent;
     border: none;
     color: var(--text-secondary);
     font-size: 1.2rem;
     cursor: pointer;
-    transition: color 0.2s;
-  }
-
-  .btn-close:hover {
-    color: var(--text-primary);
   }
 
   .modal-content h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     margin-bottom: 0.5rem;
-    color: var(--text-primary);
   }
 
   .modal-desc {
     color: var(--text-secondary);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-size: 0.95rem;
   }
 
   .submit-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .form-group label {
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--text-primary);
   }
 
   .form-group select,
@@ -176,10 +161,8 @@ import '../styles/global.css';
     color: var(--text-primary);
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font: inherit;
     outline: none;
-    transition: border-color 0.2s;
-    font-family: inherit;
   }
 
   .form-group select:focus,
@@ -190,12 +173,9 @@ import '../styles/global.css';
 
   .form-group select option {
     background: var(--bg-color);
-    color: var(--text-primary);
   }
 
   .btn-submit {
-    margin-top: 0.5rem;
     width: 100%;
-    padding: 0.8rem;
   }
 </style>

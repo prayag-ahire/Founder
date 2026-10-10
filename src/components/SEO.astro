@@ -1,40 +1,67 @@
 ---
+import { site, titleWithBrand } from '../lib/site';
+
 interface Props {
   title: string;
   description?: string;
   image?: string;
-  url?: string;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  keywords?: string[];
 }
 
 const {
   title,
-  description = "A community for founders, startups, and incorporation queries.",
-  image = "/social-preview.png",
-  url = Astro.url.href,
+  description = site.description,
+  image,
+  type = 'website',
+  jsonLd,
+  noindex = false,
+  keywords = site.keywords,
 } = Astro.props;
+
+const fullTitle = titleWithBrand(title);
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const ogImage = image ? new URL(image, Astro.site ?? Astro.url).href : undefined;
+const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
-<!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="en-IN" href={canonical} />
+<link rel="alternate" hreflang="en" href={canonical} />
+<link rel="alternate" hreflang="x-default" href={canonical} />
 <meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#0f172a" />
+<meta name="color-scheme" content="dark light" />
 
-<!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
 <meta name="description" content={description} />
+<meta name="keywords" content={keywords.join(', ')} />
+<meta name="author" content={site.legalName} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+<meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<meta name="geo.region" content="IN" />
+<meta name="geo.placename" content="India" />
+<meta name="language" content="en-IN" />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content={url} />
-<meta property="og:title" content={title} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+{ogImage && <meta property="og:image" content={ogImage} />}
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{ogImage && <meta name="twitter:image" content={ogImage} />}
+
+{jsonLdItems.map((item) => (
+  <script type="application/ld+json" set:html={JSON.stringify(item)} />
+))}

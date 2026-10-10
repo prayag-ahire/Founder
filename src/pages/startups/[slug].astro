@@ -1,10 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import { markdownToPlain } from '../../lib/site';
+import { articleSchema, breadcrumbSchema } from '../../lib/schema';
 
 export async function getStaticPaths() {
   const startupEntries = await getCollection('startups');
-  return startupEntries.map(entry => ({
+  return startupEntries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
@@ -12,47 +14,82 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const siteUrl = (Astro.site ?? Astro.url).origin;
+const description = entry.data.description;
 ---
 
-<Layout title={`${entry.data.name} - #Founder`}>
-  <div class="startup-hero glass">
+<Layout
+  title={`${entry.data.name} — Indian startup case study`}
+  description={`${entry.data.name}: ${description} What Indian founders can learn from how it was built.`}
+  type="article"
+  keywords={[entry.data.name, entry.data.industry ?? 'Indian startup', ...(entry.data.tags ?? [])]}
+  jsonLd={[
+    breadcrumbSchema(siteUrl, [
+      { name: 'Home', path: '/' },
+      { name: 'Indian startups', path: '/startups' },
+      { name: entry.data.name, path: `/startups/${entry.id}` },
+    ]),
+    articleSchema({
+      siteUrl,
+      title: `${entry.data.name} startup profile`,
+      description: markdownToPlain(entry.body ?? entry.data.description),
+      path: `/startups/${entry.id}`,
+    }),
+  ]}
+>
+  <div class="startup-hero">
     <div class="container">
+      <nav class="crumbs"><a href="/startups">Startups</a> / {entry.data.name}</nav>
       <div class="startup-header">
         <div class="startup-logo">{entry.data.logoText}</div>
-        <div class="startup-title">
+        <div>
           <h1>{entry.data.name}</h1>
           <p class="startup-tagline">{entry.data.description}</p>
+          {entry.data.tags && (
+            <div class="tags">
+              {entry.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+            </div>
+          )}
         </div>
       </div>
     </div>
   </div>
 
   <div class="container startup-body">
-    <article class="prose glass-prose">
+    <article class="prose glass">
       <Content />
     </article>
-    
-    <div class="startup-sidebar">
-      <div class="sidebar-widget glass">
-        <h3>Company Details</h3>
-        <ul class="widget-list">
-          <li><strong>Industry:</strong> Tech</li>
-          <li><strong>Stage:</strong> Growth</li>
-        </ul>
-        <a href="/startups" class="btn btn-secondary mt-4">← Back to Directory</a>
-      </div>
-    </div>
+
+    <aside class="sidebar-widget glass">
+      <h2>Company snapshot</h2>
+      <ul class="widget-list">
+        {entry.data.industry && <li><span>Industry</span><strong>{entry.data.industry}</strong></li>}
+        {entry.data.stage && <li><span>Stage</span><strong>{entry.data.stage}</strong></li>}
+        {entry.data.founded && <li><span>Founded</span><strong>{entry.data.founded}</strong></li>}
+        {entry.data.hq && <li><span>HQ</span><strong>{entry.data.hq}</strong></li>}
+      </ul>
+      {entry.data.website && (
+        <a class="btn btn-secondary site-link" href={entry.data.website} rel="noopener noreferrer" target="_blank">
+          Visit website
+        </a>
+      )}
+      <a href="/startups" class="back-link">← Back to directory</a>
+    </aside>
   </div>
 </Layout>
 
 <style>
   .startup-hero {
-    padding: 4rem 0;
-    margin-bottom: 3rem;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
+    padding: 3rem 0 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
     background: var(--header-bg);
+  }
+
+  .crumbs {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
   }
 
   .startup-header {
@@ -62,45 +99,46 @@ const { Content } = await render(entry);
   }
 
   .startup-logo {
-    width: 120px;
-    height: 120px;
-    border-radius: 30px;
+    width: 110px;
+    height: 110px;
+    border-radius: 28px;
     background: var(--logo-bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 800;
     color: var(--logo-text);
-    box-shadow: var(--card-shadow);
     flex-shrink: 0;
   }
 
-  .startup-title h1 {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 0.4rem;
   }
 
   .startup-tagline {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
 
   .startup-body {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 3rem;
+    gap: 2rem;
     padding-bottom: 5rem;
   }
 
-  .glass-prose {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 3rem;
-    box-shadow: var(--card-shadow);
+  .prose,
+  .sidebar-widget {
+    padding: 2rem;
   }
 
   .prose {
@@ -108,65 +146,58 @@ const { Content } = await render(entry);
     line-height: 1.8;
   }
 
-  .prose h1, .prose h2, .prose h3 {
+  .prose :global(h2) {
     color: var(--text-primary);
-    margin-top: 2rem;
+    margin: 1.6rem 0 0.7rem;
+    font-size: 1.35rem;
+  }
+
+  .prose :global(p),
+  .prose :global(ul) {
     margin-bottom: 1rem;
   }
 
-  .prose p {
-    margin-bottom: 1.5rem;
+  .prose :global(ul) {
+    padding-left: 1.2rem;
   }
 
-  .sidebar-widget {
-    padding: 2rem;
-  }
-
-  .sidebar-widget h3 {
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
+  .sidebar-widget h2 {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
   }
 
   .widget-list {
     list-style: none;
-    padding: 0;
   }
 
   .widget-list li {
-    padding: 0.8rem 0;
+    padding: 0.75rem 0;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
     color: var(--text-secondary);
   }
 
-  .widget-list li:last-child {
-    border-bottom: none;
+  .site-link {
+    width: 100%;
+    margin-top: 1.25rem;
   }
 
-  .widget-list strong {
-    color: var(--text-primary);
-  }
-
-  .mt-4 {
-    margin-top: 1.5rem;
+  .back-link {
     display: block;
-    text-align: center;
-  }
-
-  .btn-secondary {
-    background: var(--input-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    text-decoration: none;
+    margin-top: 1rem;
     font-weight: 600;
-    transition: all 0.2s;
   }
 
-  .btn-secondary:hover {
-    background: var(--btn-ghost-hover);
-    border-color: var(--accent-color);
+  @media (max-width: 800px) {
+    .startup-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .startup-body {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

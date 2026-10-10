@@ -1,20 +1,42 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import '../styles/global.css';
 import { getCollection } from 'astro:content';
+import { breadcrumbSchema } from '../lib/schema';
 
-const startups = await getCollection('startups');
+const startups = (await getCollection('startups')).sort((a, b) => a.data.name.localeCompare(b.data.name));
+const siteUrl = (Astro.site ?? Astro.url).origin;
 ---
 
-<Layout title="Startups - #Founder">
+<Layout
+  title="Indian Startups Worth Studying"
+  description="Short profiles of Indian-built companies — Razorpay, Zoho, Zerodha, Postman, BrowserStack, Groww — and what founders can steal from how they were built."
+  keywords={['Indian startups', 'Razorpay', 'Zoho', 'Zerodha', 'startup directory India', 'bootstrapped Indian companies']}
+  jsonLd={breadcrumbSchema(siteUrl, [
+    { name: 'Home', path: '/' },
+    { name: 'Indian startups', path: '/startups' },
+  ])}
+>
   <section class="section container">
-    
+    <header class="page-header">
+      <h1 class="page-title">Indian <span class="gradient-text">startups</span></h1>
+      <p class="page-subtitle">
+        Companies built from India that solved a painful local or global problem. Read them as case studies, not trophies.
+      </p>
+    </header>
+
     <div class="startups-grid">
-      {startups.map(startup => (
+      {startups.map((startup) => (
         <a href={`/startups/${startup.id}`} class="startup-card glass">
           <div class="startup-logo">{startup.data.logoText}</div>
-          <h3>{startup.data.name}</h3>
+          <h2>{startup.data.name}</h2>
           <p class="startup-desc">{startup.data.description}</p>
+          {startup.data.tags && (
+            <div class="tags">
+              {startup.data.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          )}
         </a>
       ))}
     </div>
@@ -23,31 +45,31 @@ const startups = await getCollection('startups');
 
 <style>
   .section {
-    padding: 2rem 0 5rem 0;
+    padding: 3rem 0 5rem;
   }
 
   .startups-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1.5rem;
   }
 
   .startup-card {
     padding: 2rem;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
     color: var(--text-primary);
     display: block;
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
   .startup-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--card-hover-shadow);
+    transform: translateY(-4px);
     border-color: var(--card-hover-border);
+    color: var(--text-primary);
+  }
+
+  .startup-card h2 {
+    font-size: 1.35rem;
   }
 
   .startup-logo {
@@ -55,20 +77,25 @@ const startups = await getCollection('startups');
     height: 80px;
     border-radius: 20px;
     background: var(--logo-bg);
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     font-weight: 800;
     color: var(--logo-text);
-    box-shadow: var(--card-shadow);
   }
 
   .startup-desc {
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    margin-top: 1rem;
+    margin: 0.8rem 0 1rem;
     line-height: 1.5;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
   }
 </style>

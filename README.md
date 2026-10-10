@@ -1,46 +1,33 @@
-# Astro Starter Kit: Basics
+# #Founder
+
+A site for **Indian founders**: how to incorporate a startup in India, Pvt Ltd vs LLP, GST, DPIIT, and short founder stories.
+
+Built with [Astro](https://astro.build). Backed by Karpav Technology.
+
+## Run locally
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Before you deploy (SEO)
 
-## 🚀 Project Structure
+1. Set your real domain. Either export `PUBLIC_SITE_URL=https://your-domain.in` or change `site` in `astro.config.mjs`. Canonical URLs, Open Graph, and the sitemap all use this.
+2. Change `email` in `src/lib/site.ts` to an inbox you read. The submit form opens a mailto draft.
+3. After go-live, add the property in [Google Search Console](https://search.google.com/search-console), submit `https://your-domain.in/sitemap-index.xml`, and set country targeting to **India** if the option is available.
+4. Ask to be indexed is not enough — the pages that should rank are `/guides/incorporate-in-india` and each `/faq/...` answer.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Content
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+- `src/content/faqs` — one markdown file per question (best for Google)
+- `src/content/startups` — Indian company case studies
+- `src/content/stories` — founder narratives
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Commands
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command           | Action                             |
+| ----------------- | ---------------------------------- |
+| `npm run dev`     | Local server at `localhost:4321`   |
+| `npm run build`   | Production build to `./dist/`      |
+| `npm run preview` | Preview the production build       |

@@ -1,7 +1,7 @@
 {
-  "name": "fast-flare",
+  "name": "founder",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
     "astro": "^7.3.6"
   },
   "allowScripts": {

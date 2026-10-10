@@ -1,10 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import { markdownToPlain } from '../../lib/site';
+import { articleSchema, breadcrumbSchema } from '../../lib/schema';
 
 export async function getStaticPaths() {
   const stories = await getCollection('stories');
-  return stories.map(entry => ({
+  return stories.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
@@ -12,125 +14,123 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const siteUrl = (Astro.site ?? Astro.url).origin;
+const description = entry.data.excerpt;
 ---
 
-<Layout title={`${entry.data.name}'s Story - #Founder`}>
+<Layout
+  title={`${entry.data.name} on building ${entry.data.startup} in India`}
+  description={`${entry.data.name}, founder of ${entry.data.startup}: ${description}`}
+  type="article"
+  keywords={[entry.data.name, entry.data.startup, 'Indian founder story', 'startup India']}
+  jsonLd={[
+    breadcrumbSchema(siteUrl, [
+      { name: 'Home', path: '/' },
+      { name: 'Founder stories', path: '/stories' },
+      { name: entry.data.name, path: `/stories/${entry.id}` },
+    ]),
+    articleSchema({
+      siteUrl,
+      title: `${entry.data.name} — ${entry.data.startup}`,
+      description: markdownToPlain(entry.body ?? entry.data.excerpt),
+      path: `/stories/${entry.id}`,
+    }),
+  ]}
+>
   <article class="story-detail-page container">
-    <div class="article-container">
-      <header class="story-header">
-        <div class="story-avatar-large">{entry.data.avatar}</div>
-        <div class="story-meta-large">
-          <h1>{entry.data.name}</h1>
-          <div class="startup-badge">{entry.data.startup}</div>
-        </div>
-      </header>
-
-      <div class="story-body">
-        <Content />
+    <nav class="crumbs"><a href="/stories">Stories</a> / {entry.data.name}</nav>
+    <header class="story-header">
+      <div class="story-avatar-large">{entry.data.avatar}</div>
+      <div>
+        <h1>{entry.data.name}</h1>
+        <p class="startup-badge">{entry.data.startup}</p>
       </div>
-
-      <footer class="story-footer">
-        <a href="/stories" class="btn-back">← Back to Stories</a>
-      </footer>
+    </header>
+    <div class="story-body">
+      <Content />
     </div>
+    <footer class="story-footer">
+      <a href="/stories">← More founder stories</a>
+      <a href="/guides/incorporate-in-india">How to incorporate in India</a>
+    </footer>
   </article>
 </Layout>
 
 <style>
   .story-detail-page {
-    padding: 4rem 0;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 3.5rem 0 4rem;
+    max-width: 800px;
   }
 
-  .article-container {
-    padding: 0;
+  .crumbs {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
   }
 
   .story-header {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.75rem;
     border-bottom: 1px solid var(--border-color);
   }
 
   .story-avatar-large {
-    width: 100px;
-    height: 100px;
+    width: 88px;
+    height: 88px;
     border-radius: 50%;
     background: linear-gradient(135deg, #1e293b, #3b82f6);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    flex-shrink: 0;
   }
 
-  :root[data-theme="light"] .story-avatar-large {
-    background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  }
-
-  .story-meta-large h1 {
-    font-size: 2.5rem;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    margin-bottom: 0.45rem;
   }
 
   .startup-badge {
     display: inline-block;
     background: rgba(59, 130, 246, 0.15);
     color: var(--accent-color);
-    padding: 0.4rem 1rem;
+    padding: 0.3rem 0.85rem;
     border-radius: 99px;
     font-weight: 600;
-    font-size: 1rem;
     border: 1px solid rgba(59, 130, 246, 0.3);
   }
 
   .story-body {
     color: var(--text-secondary);
-    font-size: 1.15rem;
-    line-height: 1.8;
+    font-size: 1.12rem;
+    line-height: 1.85;
   }
 
   .story-body :global(p) {
-    margin-bottom: 1.5rem;
-  }
-
-  .story-body :global(p:last-child) {
-    margin-bottom: 0;
+    margin-bottom: 1.35rem;
   }
 
   .story-footer {
-    margin-top: 4rem;
-    padding-top: 2rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
-  }
-
-  .btn-back {
-    display: inline-block;
-    color: var(--text-secondary);
-    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
     font-weight: 600;
-    transition: color 0.3s ease;
   }
 
-  .btn-back:hover {
-    color: var(--text-primary);
-  }
-
-  @media (max-width: 768px) {
-    .article-container {
-      padding: 2rem;
-    }
+  @media (max-width: 640px) {
     .story-header {
       flex-direction: column;
-      text-align: center;
-      gap: 1.5rem;
+      align-items: flex-start;
     }
   }
 </style>

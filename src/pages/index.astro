@@ -1,102 +1,248 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../lib/site';
+import { breadcrumbSchema } from '../lib/schema';
+
+const startups = (await getCollection('startups'))
+  .sort((a, b) => Number(!!b.data.featured) - Number(!!a.data.featured))
+  .slice(0, 3);
+const stories = (await getCollection('stories'))
+  .sort((a, b) => Number(!!b.data.featured) - Number(!!a.data.featured))
+  .slice(0, 2);
+const faqs = (await getCollection('faqs'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 6);
+
+const siteUrl = (Astro.site ?? Astro.url).origin;
 ---
 
-<Layout title="#Founder - By Karpav Technology">
-  <!-- Hero Section -->
+<Layout
+  title="How to Incorporate a Startup in India"
+  description={site.description}
+  keywords={site.keywords}
+  jsonLd={breadcrumbSchema(siteUrl, [{ name: 'Home', path: '/' }])}
+>
   <section class="hero container">
-    <div class="hero-content">
-      <h1 class="hero-title">Empowering the Next Generation of <span class="gradient-text">Founders</span></h1>
-      <p class="hero-subtitle">Discover innovative startups, connect with peers, and get answers to your most pressing incorporation questions.</p>
-      
-      <div class="hero-actions">
-        <a href="/startups" class="btn btn-primary">Explore Startups</a>
-        <a href="/faq" class="btn btn-secondary">Incorporation FAQ</a>
+    <p class="eyebrow">For founders building in India</p>
+    <h1 class="hero-title">
+      Incorporate your startup in India — without the jargon
+    </h1>
+    <p class="hero-subtitle">
+      Clear answers on <a href="/faq">Pvt Ltd vs LLP</a>, GST, DPIIT recognition, and first-year compliance.
+      Plus <a href="/stories">founder stories</a> and Indian companies worth studying.
+    </p>
+    <div class="hero-actions">
+      <a href="/guides/incorporate-in-india" class="btn btn-primary">2026 incorporation guide</a>
+      <a href="/faq" class="btn btn-secondary">Browse the FAQ</a>
+    </div>
+  </section>
+
+  <section class="container home-section" aria-labelledby="faq-teaser">
+    <div class="section-heading">
+      <div>
+        <h2 id="faq-teaser">Startup incorporation questions</h2>
+        <p class="section-lead">What Indian founders ask before they file SPICe+ or take a cheque.</p>
       </div>
+      <a href="/faq" class="section-link">All FAQs →</a>
+    </div>
+    <div class="faq-teaser">
+      {faqs.map((faq) => (
+        <a href={`/faq/${faq.id}`} class="teaser-item glass">
+          <h3>{faq.data.question}</h3>
+          <span>Read answer</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="container home-section" aria-labelledby="startup-teaser">
+    <div class="section-heading">
+      <div>
+        <h2 id="startup-teaser">Indian startups to learn from</h2>
+        <p class="section-lead">Not a hall of fame — a short list of companies that solved a real Indian problem.</p>
+      </div>
+      <a href="/startups" class="section-link">Directory →</a>
+    </div>
+    <div class="card-grid">
+      {startups.map((startup) => (
+        <a href={`/startups/${startup.id}`} class="mini-card glass">
+          <div class="mini-logo">{startup.data.logoText}</div>
+          <h3>{startup.data.name}</h3>
+          <p>{startup.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="container home-section" aria-labelledby="story-teaser">
+    <div class="section-heading">
+      <div>
+        <h2 id="story-teaser">Stories from the messy middle</h2>
+        <p class="section-lead">Compliance, pivots, and first customers — not highlight reels.</p>
+      </div>
+      <a href="/stories" class="section-link">All stories →</a>
+    </div>
+    <div class="card-grid stories">
+      {stories.map((story) => (
+        <a href={`/stories/${story.id}`} class="mini-card glass story">
+          <div class="story-row">
+            <div class="mini-avatar">{story.data.avatar}</div>
+            <div>
+              <h3>{story.data.name}</h3>
+              <p class="startup-name">{story.data.startup}</p>
+            </div>
+          </div>
+          <p>“{story.data.excerpt}”</p>
+        </a>
+      ))}
     </div>
   </section>
 </Layout>
 
 <style>
   .hero {
-    padding: 8rem 0 4rem;
+    padding: 6rem 0 3rem;
     text-align: center;
-    min-height: calc(100vh - 80px - 150px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .hero-content {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
-  .hero-title {
-    font-size: 4rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.05em;
+  .eyebrow {
+    color: var(--accent-color);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
   }
 
-  .gradient-text {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .hero-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-bottom: 1.25rem;
   }
 
   .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto 3rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .hero-subtitle a {
+    font-weight: 600;
   }
 
   .hero-actions {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
-  .btn {
-    display: inline-block;
-    padding: 1rem 2rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
+  .home-section {
+    padding: 2.5rem 0 1rem;
   }
 
-  .btn-primary {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  .section-lead {
+    color: var(--text-secondary);
+    margin-top: 0.4rem;
+    max-width: 520px;
   }
 
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-    color: #fff;
+  .faq-teaser {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
   }
 
-  .btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
+  .teaser-item {
+    padding: 1.25rem 1.4rem;
     color: var(--text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 100%;
   }
 
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+  .teaser-item:hover {
+    border-color: var(--card-hover-border);
+    color: var(--text-primary);
   }
 
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 3rem;
-    }
-    .hero-actions {
-      flex-direction: column;
-    }
+  .teaser-item h3 {
+    font-size: 1.05rem;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+
+  .teaser-item span {
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: auto;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card-grid.stories {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+
+  .mini-card {
+    padding: 1.5rem;
+    color: var(--text-primary);
+    display: block;
+  }
+
+  .mini-card:hover {
+    color: var(--text-primary);
+    border-color: var(--card-hover-border);
+    transform: translateY(-3px);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mini-card p {
+    color: var(--text-secondary);
+    margin-top: 0.6rem;
+  }
+
+  .mini-logo,
+  .mini-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--logo-bg);
+    color: var(--logo-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .mini-avatar {
+    border-radius: 50%;
+    margin-bottom: 0;
+    background: linear-gradient(135deg, #1e293b, #3b82f6);
+    color: #fff;
+  }
+
+  .story-row {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .startup-name {
+    color: var(--accent-color) !important;
+    font-weight: 600;
+    margin-top: 0.15rem !important;
   }
 </style>
