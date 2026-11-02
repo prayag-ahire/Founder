@@ -363,5 +363,54 @@ const howTo = {
     font-size: 0.88rem;
     color: var(--text-secondary);
   }
+
+  @media (max-width: 640px) {
+    .guide {
+      padding: 1.25rem 0 2rem;
+    }
+
+    h1 {
+      font-size: clamp(1.55rem, 7vw, 2rem);
+      line-height: 1.2;
+      margin-bottom: 0.65rem;
+    }
+
+    .lede {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.35rem;
+    }
+
+    .toc {
+      padding: 0.95rem 1.1rem;
+      margin-bottom: 1.75rem;
+      font-size: 0.92rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.65rem;
+    }
+
+    p, .steps {
+      font-size: 0.95rem;
+      line-height: 1.68;
+    }
+
+    .comparison-table {
+      font-size: 0.85rem;
+      min-width: 500px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem;
+    }
+
+    .next-step {
+      padding: 1.15rem;
+      margin: 2rem 0 1.25rem;
+    }
+  }
 </style>
 

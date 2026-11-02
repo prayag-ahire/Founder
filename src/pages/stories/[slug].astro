@@ -50,8 +50,14 @@ const description = entry.data.excerpt;
       <Content />
     </div>
     <footer class="story-footer">
-      <a href="/stories">← More founder stories</a>
-      <a href="/guides/incorporate-in-india">How to incorporate in India</a>
+      <a href="/stories" class="pill-nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>More founder stories</span>
+      </a>
+      <a href="/guides/incorporate-in-india" class="pill-nav-link">
+        <span>Incorporation Guide</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
     </footer>
   </article>
 </Layout>
@@ -128,9 +134,57 @@ const description = entry.data.excerpt;
   }
 
   @media (max-width: 640px) {
+    .story-detail-page {
+      padding: 1.25rem 0 2rem;
+    }
+
+    .crumbs {
+      margin-bottom: 1rem;
+      font-size: 0.82rem;
+    }
+
     .story-header {
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.1rem;
+    }
+
+    .story-avatar-large {
+      width: 52px;
+      height: 52px;
+      font-size: 1.1rem;
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .startup-badge {
+      font-size: 0.78rem;
+      padding: 0.18rem 0.65rem;
+    }
+
+    .story-body {
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    .story-footer {
+      margin-top: 1.5rem;
+      padding-top: 1.15rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .story-footer .pill-nav-link {
+      justify-content: center;
+      font-size: 0.82rem;
+      padding: 0.6rem 0.5rem;
+      white-space: nowrap;
     }
   }
 </style>

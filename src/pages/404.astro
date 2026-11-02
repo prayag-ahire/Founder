@@ -42,4 +42,20 @@ import Layout from '../layouts/Layout.astro';
     justify-content: center;
     flex-wrap: wrap;
   }
+
+  @media (max-width: 640px) {
+    .not-found {
+      padding: 4rem 0;
+      text-align: left;
+    }
+
+    .links {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .links .btn {
+      width: 100%;
+    }
+  }
 </style>

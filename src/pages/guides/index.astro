@@ -12,7 +12,7 @@ const guides = [
     category: 'Incorporation & Entity',
     readTime: '8 min read',
     summary:
-      'Step-by-step breakdown: choosing between Pvt Ltd, LLP, and OPC, reserving names in SPICe+, getting DIN & DSC, depositing subscription capital, and completing DPIIT recognition.',
+      'Choosing between Pvt Ltd, LLP, and OPC, reserving names in SPICe+, getting DIN & DSC, depositing capital, and completing DPIIT recognition.',
     badge: 'Core Guide',
     highlights: ['Pvt Ltd vs LLP', 'SPICe+ Part A & B', 'DPIIT & Udyam', 'Zero-capital setup'],
   },
@@ -22,9 +22,9 @@ const guides = [
     category: 'Funding & Capital',
     readTime: '10 min read',
     summary:
-      'The pragmatic guide to raising your first cheque: angel syndicates, iSAFE convertible notes, Startup India Seed Fund Scheme (₹50L SISFS grant), cap table dilution, and post-angel-tax rules.',
+      'Raising your first cheque: angel syndicates, iSAFE convertible notes, Startup India Seed Fund Scheme (₹50L SISFS grant), cap table dilution, and term sheets.',
     badge: 'Popular',
-    highlights: ['iSAFE vs CCPS', 'SISFS grant application', 'Dilution & valuation', 'Angel tax abolition'],
+    highlights: ['iSAFE vs CCPS', '₹50L SISFS grant', 'Dilution math', 'Angel tax abolished'],
   },
   {
     title: 'Startup Compliance, MCA Forms & Labor Law Roadmap',
@@ -32,9 +32,9 @@ const guides = [
     category: 'Compliance & Governance',
     readTime: '7 min read',
     summary:
-      'The mandatory calendar for Pvt Ltd, LLP & OPC: Form INC-20A, ADT-1, AOC-4, MGT-7, Form 11, Class 3 DSC tokens, Shops & Establishments, PF/ESI, and avoiding ₹100/day penalties.',
+      'Mandatory calendar for Pvt Ltd, LLP & OPC: Form INC-20A, ADT-1, AOC-4, MGT-7, Form 11, Class 3 DSC tokens, PF/ESI, and avoiding ₹100/day penalties.',
     badge: 'Essential',
-    highlights: ['INC-20A & ADT-1', 'LLP Form 11 & Form 8', 'DSC on MCA V3', 'Labor laws & POSH'],
+    highlights: ['INC-20A & ADT-1', 'LLP Form 11 & 8', 'DSC on MCA V3', 'Labor laws & POSH'],
   },
 ];
 ---
@@ -55,7 +55,7 @@ const guides = [
     { name: 'Guides', path: '/guides' },
   ])}
 >
-  <main class="container guides-page">
+  <div class="container guides-page">
     <header class="page-header">
       <p class="eyebrow">Playbooks for Indian Startups</p>
       <h1 class="page-title">Founder <span class="gradient-text">Guides</span></h1>
@@ -66,48 +66,41 @@ const guides = [
 
     <div class="guides-grid">
       {guides.map((guide) => (
-        <article class="guide-card glass">
+        <a href={guide.slug} class="guide-card glass">
           <div class="card-top">
             <span class="category-badge">{guide.category}</span>
             <span class="read-time">{guide.readTime}</span>
           </div>
-          <h2>
-            <a href={guide.slug}>{guide.title}</a>
-          </h2>
+          <div class="card-title-row">
+            <h2>{guide.title}</h2>
+            <span class="chevron-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </span>
+          </div>
           <p class="summary">{guide.summary}</p>
           <div class="highlights">
             {guide.highlights.map((h) => (
               <span class="tag">{h}</span>
             ))}
           </div>
-          <div class="card-footer">
-            <a href={guide.slug} class="read-btn">
-              Read guide <span>→</span>
-            </a>
-          </div>
-        </article>
+        </a>
       ))}
     </div>
 
     <section class="need-more glass">
       <div class="need-more-content">
         <h3>Have a specific question about early-stage startup hurdles?</h3>
-        <p>Explore our deep-dive answers covering GST, co-founder equity, angel tax, ESOP taxation, and ROC filings.</p>
+        <p>Explore 35+ deep-dive answers covering GST, co-founder equity, iSAFE notes, ESOP taxation, and ROC filings.</p>
       </div>
-      <a href="/faq" class="btn btn-secondary">Explore Founder FAQs →</a>
+      <a href="/faq" class="btn btn-secondary">Explore Founder FAQs</a>
     </section>
-  </main>
+  </div>
 </Layout>
 
 <style>
   .guides-page {
-    padding: 3.5rem 0 5rem;
-    max-width: 950px;
-  }
-
-  .page-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
+    padding: 3rem 0 4.5rem;
+    max-width: 920px;
   }
 
   .eyebrow {
@@ -115,125 +108,93 @@ const guides = [
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: 0.85rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .page-title {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    letter-spacing: -0.04em;
-    margin-bottom: 1rem;
-    font-weight: 800;
-  }
-
-  .page-subtitle {
-    font-size: 1.15rem;
-    color: var(--text-secondary);
-    max-width: 650px;
-    margin: 0 auto;
-    line-height: 1.6;
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
   }
 
   .guides-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
-    margin-bottom: 3.5rem;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
   }
 
   .guide-card {
-    padding: 2rem;
+    display: block;
+    padding: 1.75rem 2rem;
     border-radius: 16px;
+    color: var(--text-primary);
+    text-decoration: none;
     transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
   .guide-card:hover {
     transform: translateY(-2px);
     border-color: var(--card-hover-border);
+    color: var(--text-primary);
   }
 
   .card-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .category-badge {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--accent-color);
-    background: rgba(59, 130, 246, 0.1);
-    padding: 0.25rem 0.65rem;
-    border-radius: 6px;
-  }
-
-  .read-time {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-
-  .guide-card h2 {
-    font-size: 1.55rem;
-    letter-spacing: -0.03em;
+    gap: 0.75rem;
     margin-bottom: 0.85rem;
   }
 
-  .guide-card h2 a {
-    color: var(--text-primary);
-    text-decoration: none;
+  .category-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.14);
+    border: 1px solid rgba(59, 130, 246, 0.24);
+    padding: 0.22rem 0.65rem;
+    border-radius: 99px;
   }
 
-  .guide-card h2 a:hover {
-    color: var(--accent-color);
+  :root[data-theme="light"] .category-badge {
+    color: var(--accent-hover);
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+
+  .read-time {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .card-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .guide-card h2 {
+    font-size: 1.4rem;
+    letter-spacing: -0.025em;
+    line-height: 1.28;
   }
 
   .summary {
     color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 1.25rem;
-    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    font-size: 0.96rem;
   }
 
   .highlights {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .tag {
-    font-size: 0.8rem;
-    padding: 0.2rem 0.6rem;
-    background: var(--input-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    color: var(--text-secondary);
-  }
-
-  .card-footer {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .read-btn {
-    display: inline-flex;
-    align-items: center;
     gap: 0.4rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    font-size: 0.95rem;
-  }
-
-  .read-btn:hover span {
-    transform: translateX(4px);
-    transition: transform 0.2s ease;
   }
 
   .need-more {
-    padding: 2rem 2.5rem;
+    padding: 1.75rem 2rem;
     border-radius: 16px;
     display: flex;
     justify-content: space-between;
@@ -243,20 +204,74 @@ const guides = [
   }
 
   .need-more-content h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.15rem;
+    margin-bottom: 0.35rem;
   }
 
   .need-more-content p {
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 
   @media (max-width: 640px) {
+    .guides-page {
+      padding: 1.25rem 0 2rem;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .guides-grid {
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .guide-card {
+      padding: 1.1rem 1.15rem;
+      border-radius: 14px;
+    }
+
+    .card-top {
+      margin-bottom: 0.55rem;
+    }
+
+    .card-title-row {
+      margin-bottom: 0.45rem;
+    }
+
+    .guide-card h2 {
+      font-size: 1.12rem;
+      line-height: 1.3;
+    }
+
+    .summary {
+      font-size: 0.88rem;
+      line-height: 1.52;
+      margin-bottom: 0.75rem;
+    }
+
     .need-more {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
+      padding: 1.1rem 1.15rem;
+      gap: 0.85rem;
+      border-radius: 14px;
+    }
+
+    .need-more-content h3 {
+      font-size: 1.02rem;
+    }
+
+    .need-more-content p {
+      font-size: 0.86rem;
+    }
+
+    .need-more .btn {
+      width: 100%;
+      text-align: center;
+      border-radius: 12px;
     }
   }
 </style>
-

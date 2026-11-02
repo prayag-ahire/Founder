@@ -18,6 +18,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
 >
   <section class="section container">
     <header class="page-header">
+      <p class="eyebrow">Directory & Case Studies</p>
       <h1 class="page-title">Indian <span class="gradient-text">startups</span></h1>
       <p class="page-subtitle">
         Companies built from India that solved a painful local or global problem. Read them as case studies, not trophies.
@@ -27,8 +28,16 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
     <div class="startups-grid">
       {startups.map((startup) => (
         <a href={`/startups/${startup.id}`} class="startup-card glass">
-          <div class="startup-logo">{startup.data.logoText}</div>
-          <h2>{startup.data.name}</h2>
+          <div class="startup-top">
+            <div class="startup-logo">{startup.data.logoText}</div>
+            <div class="startup-meta">
+              <h2>{startup.data.name}</h2>
+              {startup.data.hq && <span class="startup-sub">{startup.data.hq}{startup.data.founded ? ` · ${startup.data.founded}` : ''}</span>}
+            </div>
+            <span class="chevron-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </span>
+          </div>
           <p class="startup-desc">{startup.data.description}</p>
           {startup.data.tags && (
             <div class="tags">
@@ -48,54 +57,136 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
     padding: 3rem 0 5rem;
   }
 
+  .eyebrow {
+    color: var(--accent-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
+  }
+
   .startups-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 1.25rem;
   }
 
   .startup-card {
-    padding: 2rem;
-    text-align: center;
+    padding: 1.5rem;
     color: var(--text-primary);
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
     transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
   .startup-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     border-color: var(--card-hover-border);
     color: var(--text-primary);
   }
 
-  .startup-card h2 {
-    font-size: 1.35rem;
+  .startup-top {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
   }
 
   .startup-logo {
-    width: 80px;
-    height: 80px;
-    border-radius: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     background: var(--logo-bg);
-    margin: 0 auto 1.25rem;
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--logo-text);
+    flex-shrink: 0;
+  }
+
+  .startup-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .startup-card h2 {
+    font-size: 1.22rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .startup-sub {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.15rem;
+  }
+
+  .card-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
   }
 
   .startup-desc {
     color: var(--text-secondary);
-    margin: 0.8rem 0 1rem;
-    line-height: 1.5;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    flex: 1;
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    justify-content: center;
+  }
+
+  @media (max-width: 640px) {
+    .section {
+      padding: 1.25rem 0 2rem;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .startups-grid {
+      gap: 0.75rem;
+    }
+
+    .startup-card {
+      padding: 1rem 1.1rem;
+      border-radius: 14px;
+      gap: 0.65rem;
+    }
+
+    .startup-logo {
+      width: 44px;
+      height: 44px;
+      font-size: 1.05rem;
+      border-radius: 12px;
+    }
+
+    .startup-card h2 {
+      font-size: 1.08rem;
+    }
+
+    .startup-desc {
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
   }
 </style>

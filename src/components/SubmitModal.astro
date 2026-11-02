@@ -178,4 +178,24 @@ import { site } from '../lib/site';
   .btn-submit {
     width: 100%;
   }
+
+  @media (max-width: 480px) {
+    .modal-backdrop {
+      align-items: flex-end;
+      padding: 0;
+    }
+
+    .modal-content {
+      max-width: none;
+      border-radius: 16px 16px 0 0;
+      padding: 1.5rem 1.15rem calc(1.5rem + env(safe-area-inset-bottom));
+      max-height: min(92vh, 100%);
+      overflow-y: auto;
+    }
+
+    .modal-content h2 {
+      font-size: 1.35rem;
+      padding-right: 2rem;
+    }
+  }
 </style>

@@ -46,20 +46,20 @@ const description = markdownToPlain(entry.body ?? entry.data.question);
 >
   <article class="container article">
     <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/faq">Incorporation FAQ</a>
-      <span>/</span>
-      <span>Answer</span>
+      <a href="/faq" class="pill-nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>All FAQs</span>
+      </a>
     </nav>
-    <header>
+    <header class="article-header">
       <div class="tags">
         {entry.data.tags.map((tag) => (
           <a class="tag" href={`/faq?tag=${encodeURIComponent(tag)}`}>{tag}</a>
         ))}
       </div>
       <h1>{entry.data.question}</h1>
-      <p class="lede">A practical answer for founders incorporating or running a startup in India.</p>
     </header>
-    <div class="prose">
+    <div class="prose glass prose-card">
       <Content />
     </div>
     <p class="disclaimer">This is educational information, not legal, tax, or FEMA advice. Confirm the current MCA, GST, and RBI position with a professional before you file.</p>
@@ -85,17 +85,29 @@ const description = markdownToPlain(entry.body ?? entry.data.question);
 
   .crumbs {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .back-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.7rem;
+    border-radius: 99px;
+    background: var(--btn-ghost-bg);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+    font-size: 0.82rem;
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
   }
 
   .tag {
@@ -103,25 +115,29 @@ const description = markdownToPlain(entry.body ?? entry.data.question);
   }
 
   h1 {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    letter-spacing: -0.04em;
-    margin-bottom: 0.75rem;
+    font-size: clamp(1.55rem, 4vw, 2.4rem);
+    letter-spacing: -0.035em;
+    line-height: 1.22;
+    margin-bottom: 1.25rem;
   }
 
-  .lede,
   .disclaimer {
     color: var(--text-secondary);
   }
 
-  .lede {
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
+  .prose-card {
+    padding: 1.75rem 2rem;
+    border-radius: 16px;
   }
 
   .prose {
     color: var(--text-secondary);
-    font-size: 1.08rem;
-    line-height: 1.8;
+    font-size: 1.04rem;
+    line-height: 1.78;
+  }
+
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
   }
 
   .prose :global(p) {
@@ -166,5 +182,52 @@ const description = markdownToPlain(entry.body ?? entry.data.question);
 
   .related a {
     font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .article {
+      padding: 1.25rem 0 2.5rem;
+    }
+
+    .crumbs {
+      flex-wrap: wrap;
+      row-gap: 0.2rem;
+      font-size: 0.82rem;
+      margin-bottom: 1rem;
+    }
+
+    .tags {
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(1.38rem, 6.5vw, 1.75rem);
+      margin-bottom: 1rem;
+    }
+
+    .prose {
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .prose-card {
+      padding: 1.15rem 1.2rem;
+      border-radius: 14px;
+    }
+
+    .prose :global(pre),
+    .prose :global(table),
+    .prose :global(a) {
+      overflow-wrap: anywhere;
+    }
+
+    .disclaimer {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .related {
+      margin-top: 1.75rem;
+    }
   }
 </style>

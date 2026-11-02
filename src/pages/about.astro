@@ -15,20 +15,23 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
   ])}
 >
   <article class="about-page container">
-    <header class="about-header">
-      <h1 class="about-title">About <span class="gradient-text">{site.name}</span></h1>
-      <p class="about-subtitle">Built for Indian founders who need clear answers, not another pitch-deck feed.</p>
+    <header class="page-header">
+      <p class="eyebrow">Mission & Community</p>
+      <h1 class="page-title">About <span class="gradient-text">{site.name}</span></h1>
+      <p class="page-subtitle">Built for Indian founders who need clear answers, not another pitch-deck feed.</p>
     </header>
 
     <div class="about-content">
-      <section class="about-section">
+      <section class="about-card glass">
+        <div class="card-icon">📘</div>
         <h2>Why this exists</h2>
         <p>
           Starting a company in India means choosing between a Pvt Ltd, LLP, and OPC, then living with GST, ROC filings, and — if you raise — a cap table investors will actually sign. {site.name} collects those answers in one place, next to stories from people who already made the mess.
         </p>
       </section>
 
-      <section class="about-section">
+      <section class="about-card glass">
+        <div class="card-icon">🚀</div>
         <h2>Feature your startup</h2>
         <p>
           Building something in India and want it listed as a case study? Send a short brief — what you do, who you serve, and what other founders can learn.
@@ -38,23 +41,24 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
         </div>
       </section>
 
-      <section class="about-section">
+      <section class="about-card glass">
+        <div class="card-icon">💬</div>
         <h2>Join the conversation</h2>
         <p>
           Building an early-stage company is full of confusing paperwork. Talk to other Indian founders, or send a question we should add to the FAQ.
         </p>
         <div class="community-links">
-          <a href={site.reddit} class="social-link reddit" rel="noopener noreferrer" target="_blank">
+          <a href={site.reddit} class="btn btn-secondary" rel="noopener noreferrer" target="_blank">
             r/indianstartups
           </a>
-          <button class="social-link" type="button" data-open-submit data-submit-type="question">Ask a FAQ question</button>
+          <button class="btn btn-secondary" type="button" data-open-submit data-submit-type="question">Ask a FAQ question</button>
         </div>
       </section>
     </div>
 
-    <div class="testimonial-section">
+    <div class="testimonial-section glass">
       <blockquote class="about-quote">
-        Let's plant our startups like flowers in the garden of India, and help each other flourish.
+        “Let's plant our startups like flowers in the garden of India, and help each other flourish.”
       </blockquote>
       <div class="quote-author">— {site.name} community</div>
     </div>
@@ -63,96 +67,92 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
 
 <style>
   .about-page {
-    min-height: calc(100vh - 220px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 3rem 0;
+    padding: 3rem 0 4.5rem;
+    max-width: 1050px;
   }
 
-  .about-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-  }
-
-  .about-title {
-    font-size: clamp(2.4rem, 5vw, 3.5rem);
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.05em;
-  }
-
-  .about-subtitle {
-    font-size: 1.15rem;
-    color: var(--text-secondary);
+  .eyebrow {
+    color: var(--accent-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
   }
 
   .about-content {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
+    gap: 1.25rem;
   }
 
-  .about-section h2 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
+  .about-card {
+    padding: 1.75rem;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .about-section p {
+  .card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+  }
+
+  .about-card h2 {
+    font-size: 1.22rem;
+    letter-spacing: -0.02em;
+  }
+
+  .about-card p {
     color: var(--text-secondary);
-    line-height: 1.7;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    flex: 1;
   }
 
   .action-row {
-    margin-top: 1.25rem;
+    margin-top: 0.5rem;
   }
 
   .community-links {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-    margin-top: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
   }
 
-  .social-link {
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--text-secondary);
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .social-link.reddit:hover {
-    color: #ff4500;
+  .community-links .btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.88rem;
+    border-radius: 10px;
   }
 
   .testimonial-section {
-    margin-top: 4rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+    padding: 2rem;
+    border-radius: 16px;
     text-align: center;
-    max-width: 760px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .about-quote {
-    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem);
     font-weight: 600;
-    font-style: italic;
     line-height: 1.45;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .quote-author {
     color: var(--accent-color);
     font-weight: 700;
+    font-size: 0.82rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -160,6 +160,70 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
   @media (max-width: 900px) {
     .about-content {
       grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about-page {
+      padding: 1.25rem 0 2rem;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .about-card {
+      padding: 1.15rem 1.2rem;
+      border-radius: 14px;
+      gap: 0.55rem;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 1.05rem;
+      border-radius: 10px;
+    }
+
+    .about-card h2 {
+      font-size: 1.08rem;
+    }
+
+    .about-card p {
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .action-row .btn {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .community-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+
+    .community-links .btn {
+      width: 100%;
+      padding: 0.65rem 0.5rem;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .testimonial-section {
+      margin-top: 1rem;
+      padding: 1.25rem;
+      border-radius: 14px;
+      text-align: left;
+    }
+
+    .about-quote {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
     }
   }
 </style>

@@ -69,11 +69,14 @@ const description = entry.data.description;
         {entry.data.hq && <li><span>HQ</span><strong>{entry.data.hq}</strong></li>}
       </ul>
       {entry.data.website && (
-        <a class="btn btn-secondary site-link" href={entry.data.website} rel="noopener noreferrer" target="_blank">
+        <a class="btn btn-primary site-link" href={entry.data.website} rel="noopener noreferrer" target="_blank">
           Visit website
         </a>
       )}
-      <a href="/startups" class="back-link">← Back to directory</a>
+      <a href="/startups" class="pill-nav-link back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Back to directory</span>
+      </a>
     </aside>
   </div>
 </Layout>
@@ -185,19 +188,71 @@ const description = entry.data.description;
   }
 
   .back-link {
-    display: block;
-    margin-top: 1rem;
-    font-weight: 600;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.65rem;
   }
 
   @media (max-width: 800px) {
+    .startup-hero {
+      padding: 1.25rem 0 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .crumbs {
+      margin-bottom: 0.9rem;
+      font-size: 0.82rem;
+    }
+
     .startup-header {
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .startup-logo {
+      width: 56px;
+      height: 56px;
+      font-size: 1.45rem;
+      border-radius: 15px;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .startup-tagline {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.45;
     }
 
     .startup-body {
       grid-template-columns: 1fr;
+      gap: 1rem;
+      padding-bottom: 2rem;
+    }
+
+    .prose,
+    .sidebar-widget {
+      padding: 1.15rem 1.2rem;
+      border-radius: 14px;
+    }
+
+    .prose {
+      font-size: 0.95rem;
+      line-height: 1.68;
+    }
+
+    .prose :global(h2) {
+      font-size: 1.15rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .widget-list li {
+      padding: 0.6rem 0;
+      font-size: 0.9rem;
     }
   }
 </style>

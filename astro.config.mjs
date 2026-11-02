@@ -7,6 +7,9 @@ const site = process.env.PUBLIC_SITE_URL || 'https://hashfounder.in';
 // https://astro.build/config
 export default defineConfig({
   site,
+  devToolbar: {
+    enabled: false,
+  },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),
