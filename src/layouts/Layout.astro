@@ -19,10 +19,10 @@ const currentPath = Astro.url.pathname;
 const siteUrl = (Astro.site ?? Astro.url).origin;
 const extraLd = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
 const links = [
-  { href: '/guides/incorporate-in-india', label: 'Guide', match: '/guides' },
+  { href: '/guides', label: 'Guides', match: '/guides' },
   { href: '/startups', label: 'Startups', match: '/startups' },
   { href: '/stories', label: 'Stories', match: '/stories' },
-  { href: '/faq', label: 'Incorporation FAQ', match: '/faq' },
+  { href: '/faq', label: 'Founder FAQ', match: '/faq' },
   { href: '/about', label: 'About', match: '/about' },
 ];
 ---
@@ -85,13 +85,13 @@ const links = [
         <div>
           <p class="footer-brand">{site.name}</p>
           <p class="footer-copy">
-            Guides for Indian founders on incorporation, GST, DPIIT, and building a company.
+            Playbook for Indian founders on incorporation, fundraising, equity, and compliance.
             Created by <span class="highlight">{site.company}</span>.
           </p>
         </div>
         <nav class="footer-nav" aria-label="Footer">
-          <a href="/guides/incorporate-in-india">How to incorporate in India</a>
-          <a href="/faq">Incorporation FAQ</a>
+          <a href="/guides">Founder guides</a>
+          <a href="/faq">Founder FAQ</a>
           <a href="/startups">Indian startups</a>
           <a href="/stories">Founder stories</a>
           <a href="/about">About</a>

@@ -1,0 +1,262 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { site } from '../../lib/site';
+import { breadcrumbSchema } from '../../lib/schema';
+
+const siteUrl = (Astro.site ?? Astro.url).origin;
+
+const guides = [
+  {
+    title: 'How to Incorporate a Startup in India (2026)',
+    slug: '/guides/incorporate-in-india',
+    category: 'Incorporation & Entity',
+    readTime: '8 min read',
+    summary:
+      'Step-by-step breakdown: choosing between Pvt Ltd, LLP, and OPC, reserving names in SPICe+, getting DIN & DSC, depositing subscription capital, and completing DPIIT recognition.',
+    badge: 'Core Guide',
+    highlights: ['Pvt Ltd vs LLP', 'SPICe+ Part A & B', 'DPIIT & Udyam', 'Zero-capital setup'],
+  },
+  {
+    title: 'Early-Stage Fundraising & Capital in India',
+    slug: '/guides/fundraising-in-india',
+    category: 'Funding & Capital',
+    readTime: '10 min read',
+    summary:
+      'The pragmatic guide to raising your first cheque: angel syndicates, iSAFE convertible notes, Startup India Seed Fund Scheme (₹50L SISFS grant), cap table dilution, and post-angel-tax rules.',
+    badge: 'Popular',
+    highlights: ['iSAFE vs CCPS', 'SISFS grant application', 'Dilution & valuation', 'Angel tax abolition'],
+  },
+  {
+    title: 'Startup Compliance, MCA Forms & Labor Law Roadmap',
+    slug: '/faq?tag=Compliance',
+    category: 'Compliance & Governance',
+    readTime: '7 min read',
+    summary:
+      'The mandatory calendar for Pvt Ltd, LLP & OPC: Form INC-20A, ADT-1, AOC-4, MGT-7, Form 11, Class 3 DSC tokens, Shops & Establishments, PF/ESI, and avoiding ₹100/day penalties.',
+    badge: 'Essential',
+    highlights: ['INC-20A & ADT-1', 'LLP Form 11 & Form 8', 'DSC on MCA V3', 'Labor laws & POSH'],
+  },
+];
+---
+
+<Layout
+  title="Founder Guides — Incorporation, Fundraising, Equity & Compliance in India"
+  description="Practical, step-by-step playbooks for early-stage Indian founders. Learn how to incorporate, raise your first round, split co-founder equity, and navigate compliance."
+  keywords={[
+    'startup guides India',
+    'incorporate startup in India',
+    'fundraising guide India',
+    'iSAFE notes India',
+    'startup funding India',
+    'early stage founder guide',
+  ]}
+  jsonLd={breadcrumbSchema(siteUrl, [
+    { name: 'Home', path: '/' },
+    { name: 'Guides', path: '/guides' },
+  ])}
+>
+  <main class="container guides-page">
+    <header class="page-header">
+      <p class="eyebrow">Playbooks for Indian Startups</p>
+      <h1 class="page-title">Founder <span class="gradient-text">Guides</span></h1>
+      <p class="page-subtitle">
+        Everything you need to navigate the early days of starting up in India — zero fluff, zero legal jargon.
+      </p>
+    </header>
+
+    <div class="guides-grid">
+      {guides.map((guide) => (
+        <article class="guide-card glass">
+          <div class="card-top">
+            <span class="category-badge">{guide.category}</span>
+            <span class="read-time">{guide.readTime}</span>
+          </div>
+          <h2>
+            <a href={guide.slug}>{guide.title}</a>
+          </h2>
+          <p class="summary">{guide.summary}</p>
+          <div class="highlights">
+            {guide.highlights.map((h) => (
+              <span class="tag">{h}</span>
+            ))}
+          </div>
+          <div class="card-footer">
+            <a href={guide.slug} class="read-btn">
+              Read guide <span>→</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <section class="need-more glass">
+      <div class="need-more-content">
+        <h3>Have a specific question about early-stage startup hurdles?</h3>
+        <p>Explore our deep-dive answers covering GST, co-founder equity, angel tax, ESOP taxation, and ROC filings.</p>
+      </div>
+      <a href="/faq" class="btn btn-secondary">Explore Founder FAQs →</a>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .guides-page {
+    padding: 3.5rem 0 5rem;
+    max-width: 950px;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .eyebrow {
+    color: var(--accent-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    letter-spacing: -0.04em;
+    margin-bottom: 1rem;
+    font-weight: 800;
+  }
+
+  .page-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .guides-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .guide-card {
+    padding: 2rem;
+    border-radius: 16px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .guide-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--card-hover-border);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .category-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.1);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+  }
+
+  .read-time {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .guide-card h2 {
+    font-size: 1.55rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.85rem;
+  }
+
+  .guide-card h2 a {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .guide-card h2 a:hover {
+    color: var(--accent-color);
+  }
+
+  .summary {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .read-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-size: 0.95rem;
+  }
+
+  .read-btn:hover span {
+    transform: translateX(4px);
+    transition: transform 0.2s ease;
+  }
+
+  .need-more {
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .need-more-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .need-more-content p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 640px) {
+    .need-more {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+

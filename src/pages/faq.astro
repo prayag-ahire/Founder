@@ -17,8 +17,8 @@ const initialTag = Astro.url.searchParams.get('tag') ?? '';
 ---
 
 <Layout
-  title="Startup Incorporation FAQ India — Pvt Ltd vs LLP, GST, DPIIT"
-  description="Answers for Indian founders: Pvt Ltd vs LLP, how to register a company, GST, DPIIT recognition, ESOP tax, angel tax, NRI directors, and first-year ROC compliance."
+  title="Indian Founder FAQ — Incorporation, Funding, Equity & Compliance"
+  description="Essential answers for early-stage Indian founders: choosing an entity, raising angel & seed rounds, iSAFE notes, co-founder equity, GST, and ROC compliance."
   keywords={[
     'startup FAQ India',
     'Pvt Ltd vs LLP',
@@ -31,7 +31,7 @@ const initialTag = Astro.url.searchParams.get('tag') ?? '';
   jsonLd={[
     breadcrumbSchema(siteUrl, [
       { name: 'Home', path: '/' },
-      { name: 'Incorporation FAQ', path: '/faq' },
+      { name: 'Founder FAQ', path: '/faq' },
     ]),
     faqPageSchema(
       siteUrl,
@@ -45,9 +45,9 @@ const initialTag = Astro.url.searchParams.get('tag') ?? '';
 >
   <section class="container faq-page">
     <header class="page-header">
-      <h1 class="page-title">Incorporation <span class="gradient-text">FAQ</span></h1>
+      <h1 class="page-title">Founder <span class="gradient-text">FAQ</span></h1>
       <p class="page-subtitle">
-        Practical answers on registering a startup in India — entity choice, GST, DPIIT, funding, and compliance.
+        Practical answers on starting up in India — entity choice, early funding, co-founder equity, GST, and compliance.
         Educational, not legal advice.
       </p>
     </header>
@@ -59,7 +59,7 @@ const initialTag = Astro.url.searchParams.get('tag') ?? '';
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="search" id="faq-search" placeholder="Search Pvt Ltd, GST, DPIIT…" value={initialQuery} />
+          <input type="search" id="faq-search" placeholder="Search iSAFE, funding, Pvt Ltd, GST, equity…" value={initialQuery} />
         </div>
         <button id="toggle-filters" class="btn-filter" type="button" aria-expanded="false" aria-controls="filter-panel">
           Filters

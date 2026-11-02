@@ -15,34 +15,86 @@ const faqs = (await getCollection('faqs'))
   .slice(0, 6);
 
 const siteUrl = (Astro.site ?? Astro.url).origin;
+
+const founderPillars = [
+  {
+    icon: '🏛️',
+    title: 'Thinking & Incorporating',
+    description: 'Pvt Ltd vs LLP vs OPC. SPICe+ registration, name approval, bank account setup, and DPIIT recognition.',
+    link: '/guides/incorporate-in-india',
+    linkText: 'Incorporation Guide →',
+  },
+  {
+    icon: '🚀',
+    title: 'Fundraising & Grants',
+    description: 'Raising angel cheques, iSAFE notes, the ₹50L Startup India Seed Fund (SISFS), cap tables, and term sheets.',
+    link: '/guides/fundraising-in-india',
+    linkText: 'Fundraising Guide →',
+  },
+  {
+    icon: '🤝',
+    title: 'Co-Founders & Equity',
+    description: 'Splitting equity without drama, 4-year vesting with 1-year cliff, founder agreements, and 10% ESOP pools.',
+    link: '/faq?tag=Equity%20%26%20ESOPs',
+    linkText: 'Equity & ESOPs FAQ →',
+  },
+  {
+    icon: '⚖️',
+    title: 'Compliance, MCA & Labor Laws',
+    description: 'Mandatory MCA forms (INC-20A, AOC-4, MGT-7), LLP Form 11, DSC tokens, PF/ESI labor laws, and avoiding penalties.',
+    link: '/faq?tag=Compliance',
+    linkText: 'Compliance & Legal FAQ →',
+  },
+];
 ---
 
 <Layout
-  title="How to Incorporate a Startup in India"
+  title="The Playbook for Early-Stage Indian Startups"
   description={site.description}
   keywords={site.keywords}
   jsonLd={breadcrumbSchema(siteUrl, [{ name: 'Home', path: '/' }])}
 >
   <section class="hero container">
-    <p class="eyebrow">For founders building in India</p>
+    <p class="eyebrow">The Open Handbook for Indian Founders</p>
     <h1 class="hero-title">
-      Incorporate your startup in India — without the jargon
+      Build, incorporate & raise your startup in India
     </h1>
     <p class="hero-subtitle">
-      Clear answers on <a href="/faq">Pvt Ltd vs LLP</a>, GST, DPIIT recognition, and first-year compliance.
-      Plus <a href="/stories">founder stories</a> and Indian companies worth studying.
+      No buzzwords. Practical guidance for founders on <strong>entity incorporation</strong>, <strong>angel & seed fundraising</strong>, <strong>co-founder vesting</strong>, and <strong>statutory compliance</strong>.
     </p>
     <div class="hero-actions">
-      <a href="/guides/incorporate-in-india" class="btn btn-primary">2026 incorporation guide</a>
-      <a href="/faq" class="btn btn-secondary">Browse the FAQ</a>
+      <a href="/guides" class="btn btn-primary">Browse Founder Guides</a>
+      <a href="/guides/fundraising-in-india" class="btn btn-secondary">Fundraising Guide</a>
+      <a href="/faq" class="btn btn-ghost">Browse all FAQs</a>
+    </div>
+  </section>
+
+  <!-- Founder Pillars -->
+  <section class="container home-section" aria-labelledby="pillars-heading">
+    <div class="section-heading">
+      <div>
+        <h2 id="pillars-heading">What are you tackling right now?</h2>
+        <p class="section-lead">Find clear, actionable advice for your current startup stage.</p>
+      </div>
+      <a href="/guides" class="section-link">All guides →</a>
+    </div>
+    <div class="pillars-grid">
+      {founderPillars.map((pillar) => (
+        <div class="pillar-card glass">
+          <div class="pillar-icon">{pillar.icon}</div>
+          <h3>{pillar.title}</h3>
+          <p>{pillar.description}</p>
+          <a href={pillar.link} class="pillar-link">{pillar.linkText}</a>
+        </div>
+      ))}
     </div>
   </section>
 
   <section class="container home-section" aria-labelledby="faq-teaser">
     <div class="section-heading">
       <div>
-        <h2 id="faq-teaser">Startup incorporation questions</h2>
-        <p class="section-lead">What Indian founders ask before they file SPICe+ or take a cheque.</p>
+        <h2 id="faq-teaser">Essential founder questions</h2>
+        <p class="section-lead">What Indian founders ask before they sign an agreement or deposit capital.</p>
       </div>
       <a href="/faq" class="section-link">All FAQs →</a>
     </div>
@@ -102,7 +154,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
 
 <style>
   .hero {
-    padding: 6rem 0 3rem;
+    padding: 6rem 0 3.5rem;
     text-align: center;
     max-width: 900px;
     margin: 0 auto;
@@ -111,27 +163,29 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
   .eyebrow {
     color: var(--accent-color);
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     font-size: 0.85rem;
     margin-bottom: 1rem;
   }
 
   .hero-title {
-    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
     font-weight: 800;
     letter-spacing: -0.05em;
     margin-bottom: 1.25rem;
+    line-height: 1.15;
   }
 
   .hero-subtitle {
     font-size: 1.2rem;
     color: var(--text-secondary);
     margin-bottom: 2.25rem;
+    line-height: 1.6;
   }
 
-  .hero-subtitle a {
-    font-weight: 600;
+  .hero-subtitle strong {
+    color: var(--text-primary);
   }
 
   .hero-actions {
@@ -142,7 +196,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
   }
 
   .home-section {
-    padding: 2.5rem 0 1rem;
+    padding: 2.5rem 0 1.5rem;
   }
 
   .section-lead {
@@ -151,10 +205,64 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
     max-width: 520px;
   }
 
+  /* Pillars grid */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .pillar-card {
+    padding: 1.75rem;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .pillar-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--card-hover-border);
+  }
+
+  .pillar-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .pillar-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .pillar-card p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  .pillar-link {
+    font-weight: 700;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: inline-block;
+  }
+
+  .pillar-link:hover {
+    text-decoration: underline;
+  }
+
   .faq-teaser {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
+    margin-top: 1rem;
   }
 
   .teaser-item {
@@ -164,6 +272,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
     flex-direction: column;
     gap: 0.75rem;
     min-height: 100%;
+    border-radius: 12px;
   }
 
   .teaser-item:hover {
@@ -188,6 +297,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.25rem;
+    margin-top: 1rem;
   }
 
   .card-grid.stories {
@@ -198,6 +308,7 @@ const siteUrl = (Astro.site ?? Astro.url).origin;
     padding: 1.5rem;
     color: var(--text-primary);
     display: block;
+    border-radius: 12px;
   }
 
   .mini-card:hover {
